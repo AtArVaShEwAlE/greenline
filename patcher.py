@@ -8,7 +8,7 @@ OLLAMA_MODEL = os.getenv("OLLAMA_MODEL","deepseek-r1:1.5b")
 
 def apply_patch(file_path,new_code):
 
-    with open(file_path,"w") as file:
+    with open(file_path,"w",encoding="utf-8") as file:
         file.writelines(new_code)
 
 def ask_llm(broken_code, error_output):

@@ -54,8 +54,6 @@ def run_agent(code_file, test_file, max_retries=5, log_callback=print):
 
         show_diff(current_code, fixed_code, log_callback)
         apply_patch(code_file, fixed_code)
-        show_diff(current_code, fixed_code, log_callback)
-        apply_patch(code_file, fixed_code)
         log_callback("🔧 Patch applied.")
 
         repo_dir = os.path.dirname(os.path.abspath(code_file)) or "."
@@ -65,7 +63,6 @@ def run_agent(code_file, test_file, max_retries=5, log_callback=print):
             log_callback(f"📌 Committed: \"{commit_msg}\"")
         else:
             log_callback("⚠️ Git commit skipped (no repo or nothing changed).")
-        log_callback("🔧 Patch applied.")
 
     log_callback(f"❌ Greenline gave up after {max_retries} attempts.")
     return {"success": False, "attempts": max_retries}   # ← changed
