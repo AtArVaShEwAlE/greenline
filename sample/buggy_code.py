@@ -7,4 +7,4 @@ def multiply(a: int, b: int) -> int:
 def is_palindrome(s: str) -> bool:
     if len(s) <= 1:
         return True
-    return s == s[:1]
+    return s == s[::-1]
