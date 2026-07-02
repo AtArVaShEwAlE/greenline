@@ -5,4 +5,6 @@ def multiply(a: int, b: int) -> int:
     return a * b
 
 def is_palindrome(s: str) -> bool:
-    return s == s[:1]
+    if len(s) <= 1:
+        return True
+    return s == s[::-1]
