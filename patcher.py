@@ -12,11 +12,12 @@ def apply_patch(file_path,new_code):
     with open(file_path,"w",encoding="utf-8") as file:
         file.writelines(new_code)
 
-def ask_llm(broken_code,error_output):
+def ask_llm(broken_code, error_output, model=None):
     if not GROQ_API_KEY:
         print("GROQ_API_KEY not set. Set it as an environment variable.")
         return ""
-    
+
+    selected_model = model or GROQ_MODEL
     short_error = error_output[:200]
     prompt = (
         "Fix this Python code. Return ONLY corrected code in ```python blocks. No explanation.\n\n"
@@ -30,14 +31,14 @@ def ask_llm(broken_code,error_output):
         GROQ_API_URL,
         headers={
             "Authorization": f"Bearer {GROQ_API_KEY}",
-            "Content-Type":"application/json"
+            "Content-Type": "application/json"
         },
         json={
-            "model":GROQ_MODEL,
-            "messages":[
-                {"role":"user","content":prompt}
+            "model": selected_model,
+            "messages": [
+                {"role": "user", "content": prompt}
             ],
-            "temperature":0.2
+            "temperature": 0.2
         }
     )
 
@@ -45,10 +46,10 @@ def ask_llm(broken_code,error_output):
     if "error" in data:
         print(f"Groq error: {data['error']}")
         return ""
-    
+
     try:
         return data["choices"][0]["message"]["content"]
-    except (KeyError,IndexError):
+    except (KeyError, IndexError):
         print(f"Unexpected Groq response format: {data}")
         return ""
 
