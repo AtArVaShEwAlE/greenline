@@ -40,67 +40,55 @@ app.geometry("1100x700")
 app.minsize(900, 600)
 app.iconbitmap(r"E:\greenline\logo.ico")
 app.configure(fg_color=COLOR_BG)
-app.grid_rowconfigure(0, weight=0)   # top bar — fixed
-app.grid_rowconfigure(1, weight=0)   # settings bar — fixed (NEW)
-app.grid_rowconfigure(2, weight=1)   # panels — expandable
-app.grid_rowconfigure(3, weight=0)
+app.grid_rowconfigure(0, weight=0)   # combined header — fixed
+app.grid_rowconfigure(1, weight=1)   # panels — expandable
 app.grid_columnconfigure(0, weight=3)
 app.grid_columnconfigure(1, weight=2)
 
-# Top bar
-top_bar = ctk.CTkFrame(app, height=56, corner_radius=0, fg_color=COLOR_BG, border_width=0)
-top_bar.grid(row=0, column=0, columnspan=2, sticky="ew")
-top_bar.grid_propagate(False)
-
-wm_image = CTkImage(light_image=Image.open("wordmark.png"),
-                    dark_image=Image.open("wordmark.png"),
-                    size=(173, 32))
-wordmark_label = ctk.CTkLabel(top_bar, image=wm_image, text="")
-wordmark_label.pack(side="left", padx=20, pady=10)
-
-# subtle separator line under the top bar
-top_bar_border = ctk.CTkFrame(app, height=1, corner_radius=0, fg_color=COLOR_BORDER)
-top_bar_border.grid(row=0, column=0, columnspan=2, sticky="sew")
-
-# ── SETTINGS BAR ──
+# ── HEADER BAR (logo + model + retries, all in one row) ──
 GROQ_MODELS = [
     "llama-3.3-70b-versatile",
     "llama-3.1-8b-instant",
     "gemma2-9b-it",
 ]
 
-app.settings = {
-    "model": GROQ_MODELS[0],
-    "max_retries": 5
-}
+header_bar = ctk.CTkFrame(app, height=56, corner_radius=0, fg_color=COLOR_PANEL_ALT)
+header_bar.grid(row=0, column=0, columnspan=2, sticky="ew")
+header_bar.grid_propagate(False)
 
-settings_bar = ctk.CTkFrame(app, height=48, corner_radius=0, fg_color=COLOR_PANEL_ALT)
-settings_bar.grid(row=1, column=0, columnspan=2, sticky="ew")
-settings_bar.grid_propagate(False)
+header_border = ctk.CTkFrame(app, height=1, corner_radius=0, fg_color=COLOR_BORDER)
+header_border.grid(row=0, column=0, columnspan=2, sticky="sew")
 
-settings_border = ctk.CTkFrame(app, height=1, corner_radius=0, fg_color=COLOR_BORDER)
-settings_border.grid(row=1, column=0, columnspan=2, sticky="sew")
+wm_image = CTkImage(light_image=Image.open("wordmark.png"),
+                    dark_image=Image.open("wordmark.png"),
+                    size=(150, 28))
+wordmark_label = ctk.CTkLabel(header_bar, image=wm_image, text="")
+wordmark_label.pack(side="left", padx=(20, 28), pady=10)
 
-ctk.CTkLabel(settings_bar, text="Model", font=ctk.CTkFont(family=FONT_MONO, size=11),
-             text_color=COLOR_TEXT_MUTED).pack(side="left", padx=(20, 8), pady=10)
+ctk.CTkLabel(header_bar, text="Model", font=ctk.CTkFont(family=FONT_MONO, size=11),
+             text_color=COLOR_TEXT_MUTED).pack(side="left", padx=(0, 8))
 
 model_var = ctk.StringVar(value=GROQ_MODELS[0])
-model_menu = ctk.CTkOptionMenu(settings_bar, values=GROQ_MODELS, variable=model_var,
+model_menu = ctk.CTkOptionMenu(header_bar, values=GROQ_MODELS, variable=model_var,
                                 width=200, height=28,
                                 fg_color=COLOR_BTN_SECONDARY, button_color=COLOR_ACCENT,
                                 button_hover_color=COLOR_ACCENT_HOVER,
                                 font=ctk.CTkFont(family=FONT_MONO, size=11))
-model_menu.pack(side="left", padx=(0, 24), pady=10)
+model_menu.pack(side="left", padx=(0, 24))
 
-ctk.CTkLabel(settings_bar, text="Max retries", font=ctk.CTkFont(family=FONT_MONO, size=11),
-             text_color=COLOR_TEXT_MUTED).pack(side="left", padx=(0, 8), pady=10)
+ctk.CTkLabel(header_bar, text="Max retries", font=ctk.CTkFont(family=FONT_MONO, size=11),
+             text_color=COLOR_TEXT_MUTED).pack(side="left", padx=(0, 8))
 
 retry_var = ctk.StringVar(value="5")
-retry_entry = ctk.CTkEntry(settings_bar, textvariable=retry_var, width=50, height=28,
+retry_entry = ctk.CTkEntry(header_bar, textvariable=retry_var, width=50, height=28,
                             fg_color=COLOR_PANEL, border_color=COLOR_BORDER,
                             text_color=COLOR_TEXT_PRIMARY,
                             font=ctk.CTkFont(family=FONT_MONO, size=11))
-retry_entry.pack(side="left", pady=10)
+retry_entry.pack(side="left")
+left_title = ctk.CTkLabel(header_bar, text="No project loaded",
+                           font=ctk.CTkFont(family=FONT_MONO, size=12),
+                           text_color=COLOR_TEXT_SECONDARY, anchor="w")
+left_title.pack(side="left", padx=(24, 0))
 
 def open_settings_window():
     win = ctk.CTkToplevel(app)
@@ -152,57 +140,64 @@ def open_settings_window():
 
 # ── LEFT PANEL ──
 left_panel = ctk.CTkFrame(app, corner_radius=0, fg_color=COLOR_PANEL, border_width=0)
-left_panel.grid(row=2, column=0, sticky="nsew", padx=(0, 1))
-
-left_header = ctk.CTkFrame(left_panel, fg_color="transparent")
-left_header.pack(fill="x", padx=16, pady=(16, 8))
-
-left_title = ctk.CTkLabel(left_header, text="No project loaded",
-                           font=ctk.CTkFont(family=FONT_MONO, size=13, weight="bold"),
-                           text_color=COLOR_TEXT_SECONDARY, anchor="w")
-left_title.pack(side="left", fill="x", expand=True)
+left_panel.grid(row=1, column=0, sticky="nsew")
 
 # ── BODY: sidebar (left) + tabs/editor (right) ──
 left_body = ctk.CTkFrame(left_panel, fg_color="transparent")
-left_body.pack(fill="both", expand=True, padx=16, pady=(0, 8))
+left_body.pack(fill="both", expand=True)
 
-# Sidebar (file explorer)
-sidebar = ctk.CTkFrame(left_body, width=150, corner_radius=8, fg_color=COLOR_SIDEBAR,
-                        border_width=1, border_color=COLOR_BORDER)
-sidebar.pack(side="left", fill="y", padx=(0, 8))
+# Sidebar (file explorer) — spans full height
+sidebar = ctk.CTkFrame(left_body, width=170, corner_radius=0, fg_color=COLOR_SIDEBAR, border_color=COLOR_BORDER)
+sidebar.pack(side="left", fill="y")
 sidebar.pack_propagate(False)
 
 ctk.CTkLabel(sidebar, text="EXPLORER", font=ctk.CTkFont(family=FONT_MONO, size=10, weight="bold"),
-             text_color=COLOR_TEXT_MUTED).pack(anchor="w", padx=10, pady=(10, 4))
+             text_color=COLOR_TEXT_MUTED).pack(anchor="w", padx=12, pady=(12, 6))
 
 sidebar_list = ctk.CTkScrollableFrame(sidebar, fg_color="transparent")
 sidebar_list.pack(fill="both", expand=True, padx=4, pady=(0, 4))
+divider = ctk.CTkFrame(left_body, width=1, fg_color=COLOR_BORDER)
+divider.pack(side="left", fill="y")
+# Draggable resize grip (VS Code style)
+resize_grip = ctk.CTkFrame(left_body, width=4, fg_color="transparent", cursor="sb_h_double_arrow")
+resize_grip.pack(side="left", fill="y")
 
-# Editor area (tabs + line numbers + code)
+def _on_drag(event):
+    new_width = sidebar.winfo_width() + event.x
+    new_width = max(120, min(new_width, 400))
+    sidebar.configure(width=new_width)
+
+resize_grip.bind("<B1-Motion>", _on_drag)
+resize_grip.bind("<Enter>", lambda e: resize_grip.configure(fg_color=COLOR_ACCENT))
+resize_grip.bind("<Leave>", lambda e: resize_grip.configure(fg_color="transparent"))
+
+# Editor area — tabs, code, and the load buttons all live here now
 editor_area = ctk.CTkFrame(left_body, fg_color="transparent")
 editor_area.pack(side="left", fill="both", expand=True)
 
-tab_bar = ctk.CTkFrame(editor_area, height=34, fg_color="transparent")
-tab_bar.pack(fill="x", pady=(0, 4))
+tab_bar = ctk.CTkFrame(editor_area, height=36, fg_color=COLOR_PANEL_ALT)
+tab_bar.pack(fill="x")
 tab_bar.pack_propagate(False)
 
-code_row = ctk.CTkFrame(editor_area, fg_color="transparent")
-code_row.pack(fill="both", expand=True)
+# Unified container so line numbers + code look like ONE seamless box
+code_container = ctk.CTkFrame(editor_area, corner_radius=0, fg_color=COLOR_BG, border_width=0)
+code_container.pack(fill="both", expand=True)
 
-line_numbers = tk.Text(code_row, width=4, padx=6, pady=10,
+line_numbers = tk.Text(code_container, width=4, padx=8, pady=10,
                         font=(FONT_MONO, 13), bg=COLOR_BG, fg=COLOR_LINE_NUMBERS,
                         bd=0, highlightthickness=0, wrap="none", state="disabled")
 line_numbers.pack(side="left", fill="y")
 
-code_box = ctk.CTkTextbox(code_row,
+code_box = ctk.CTkTextbox(code_container,
                            font=ctk.CTkFont(family=FONT_MONO, size=13),
                            fg_color=COLOR_BG, text_color=COLOR_TEXT_PRIMARY,
-                           corner_radius=10, wrap="none",
-                           border_width=1, border_color=COLOR_BORDER)
-code_box.pack(side="left", fill="both", expand=True)
+                           corner_radius=0, wrap="none", border_width=0)
+code_box.pack(side="left", fill="both", expand=True, padx=(2, 4))
 
-btn_row = ctk.CTkFrame(left_panel, fg_color="transparent")
-btn_row.pack(fill="x", padx=16, pady=(0, 16))
+# Buttons now live at the bottom of the EDITOR area — not under the sidebar
+editor_btn_row = ctk.CTkFrame(editor_area, fg_color="transparent")
+editor_btn_row.pack(fill="x", padx=12, pady=10)
+
 
 # ── TAB / SIDEBAR STATE ──
 tab_buttons = {}
@@ -241,8 +236,8 @@ def open_file_tab(file_path):
 
     for path, btn in tab_buttons.items():
         is_active = (path == file_path)
-        btn.configure(fg_color=COLOR_TAB_ACTIVE if is_active else COLOR_TAB_INACTIVE,
-                      text_color=COLOR_TEXT_PRIMARY if is_active else COLOR_TEXT_MUTED)
+        btn.configure(fg_color=COLOR_SUCCESS if is_active else COLOR_TAB_INACTIVE,
+                    text_color=COLOR_BG if is_active else COLOR_TEXT_MUTED)
     for path, btn in sidebar_buttons.items():
         is_active = (path == file_path)
         btn.configure(fg_color=COLOR_TAB_ACTIVE if is_active else "transparent",
@@ -272,12 +267,12 @@ def load_file():
         for abs_path in abs_files:
             file_label = os.path.basename(abs_path)
 
-            tab_btn = ctk.CTkButton(tab_bar, text=file_label, height=30,
-                                     fg_color=COLOR_TAB_INACTIVE, text_color=COLOR_TEXT_MUTED,
-                                     hover_color=COLOR_BTN_SECONDARY_HOVER, corner_radius=6,
-                                     font=ctk.CTkFont(family=FONT_MONO, size=11),
-                                     command=lambda p=abs_path: open_file_tab(p))
-            tab_btn.pack(side="left", padx=(0, 4))
+            tab_btn = ctk.CTkButton(tab_bar, text=file_label, height=36, corner_radius=0,
+                                    fg_color=COLOR_TAB_INACTIVE, text_color=COLOR_TEXT_MUTED,
+                                    hover_color=COLOR_BTN_SECONDARY_HOVER,
+                                    font=ctk.CTkFont(family=FONT_MONO, size=11),
+                                    command=lambda p=abs_path: open_file_tab(p))
+            tab_btn.pack(side="left")
             tab_buttons[abs_path] = tab_btn
 
             side_btn = ctk.CTkButton(sidebar_list, text=f"🐍 {file_label}", height=26,
@@ -300,14 +295,14 @@ def load_test_file():
         app.current_test_file = file_path
         test_file_label.configure(text=f"tests: {file_path}", text_color=COLOR_SUCCESS)
 
-load_btn = ctk.CTkButton(btn_row, text="📂  Load File",
+load_btn = ctk.CTkButton(editor_btn_row, text="📂  Load File",
                           height=34,
                           fg_color=COLOR_BTN_SECONDARY, hover_color=COLOR_BTN_SECONDARY_HOVER,
                           corner_radius=8, text_color=COLOR_TEXT_PRIMARY,
                           font=ctk.CTkFont(size=12, weight="bold"), command=load_file)
 load_btn.pack(side="left", padx=(0, 8))
 
-test_btn = ctk.CTkButton(btn_row, text="🧪  Load Tests",
+test_btn = ctk.CTkButton(editor_btn_row, text="🧪  Load Tests",
                           height=34,
                           fg_color=COLOR_BTN_SECONDARY, hover_color=COLOR_BTN_SECONDARY_HOVER,
                           corner_radius=8, text_color=COLOR_TEXT_PRIMARY,
@@ -316,7 +311,7 @@ test_btn.pack(side="left")
 
 # ── RIGHT PANEL ──
 right_panel = ctk.CTkFrame(app, corner_radius=0, fg_color=COLOR_PANEL_ALT)
-right_panel.grid(row=2, column=1, sticky="nsew",padx=(1,0))
+right_panel.grid(row=1, column=1, sticky="nsew",padx=(1,0))
 
 right_header = ctk.CTkFrame(right_panel, fg_color="transparent")
 right_header.pack(fill="x", padx=16, pady=(16, 4))
@@ -349,25 +344,20 @@ log_box = ctk.CTkTextbox(right_panel,
 log_box.pack(fill="both", expand=True, padx=16, pady=(0, 12))
 log_box.configure(state="disabled")
 
-# ── DIFF PANEL ──
-diff_panel = ctk.CTkFrame(app, height=130, corner_radius=0, fg_color=COLOR_BG,
-                           border_width=0)
-diff_panel.grid(row=3, column=0, columnspan=2, sticky="ew")
-diff_panel.grid_propagate(False)
+diff_section = ctk.CTkFrame(right_panel, height=140, corner_radius=8,
+                             fg_color=COLOR_BG, border_width=1, border_color=COLOR_BORDER)
+diff_section.pack(side="bottom", fill="x", padx=16, pady=(0, 16))
+diff_section.pack_propagate(False)
 
-diff_border = ctk.CTkFrame(app, height=1, corner_radius=0, fg_color=COLOR_BORDER)
-diff_border.grid(row=3, column=0, columnspan=2, sticky="new")
-
-diff_title = ctk.CTkLabel(diff_panel, text="CHANGES",
+diff_title = ctk.CTkLabel(diff_section, text="CHANGES",
                            font=ctk.CTkFont(family=FONT_MONO, size=11, weight="bold"),
                            text_color=COLOR_TEXT_MUTED)
-diff_title.pack(anchor="w", padx=20, pady=(10, 0))
+diff_title.pack(anchor="w", padx=12, pady=(8, 0))
 
-diff_box = ctk.CTkTextbox(diff_panel,
+diff_box = ctk.CTkTextbox(diff_section,
                            font=ctk.CTkFont(family=FONT_MONO, size=12),
-                           fg_color=COLOR_BG, text_color=COLOR_TEXT_PRIMARY,
-                           corner_radius=0)
-diff_box.pack(fill="both", expand=True, padx=20, pady=(4, 10))
+                           fg_color=COLOR_BG, text_color=COLOR_TEXT_PRIMARY, corner_radius=0)
+diff_box.pack(fill="both", expand=True, padx=12, pady=(4, 8))
 diff_box.configure(state="disabled")
 
 # ── QUEUE + HEALING ──
@@ -412,6 +402,7 @@ def poll_queue():
             log_box.see("end")
             log_box.configure(state="disabled")
     app.after(100, poll_queue)
+
 
 def run_healing():
     if not hasattr(app, "current_project_dir"):
