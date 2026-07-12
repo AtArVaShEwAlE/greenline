@@ -19,4 +19,4 @@ class Inventory:
         return self.stock.get(item, 0)
 
     def has_enough(self, item, quantity):
-        return self.get_quantity(item) >= quantity  # Fix: changed > to >=
+        return self.get_quantity(item) >= quantity  # FIX: changed > to >=

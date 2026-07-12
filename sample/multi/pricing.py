@@ -11,7 +11,7 @@ def get_price(item):
 
 def calculate_subtotal(item, quantity):
     price = get_price(item)
-    return price * quantity  # Fix: multiply price by quantity
+    return price + quantity  # BUG: should be price * quantity
 
 def apply_tax(subtotal, tax_rate=0.08):
-    return subtotal + (subtotal * tax_rate)  # Fix: add tax to subtotal
+    return subtotal - (subtotal * tax_rate)  # BUG: subtracts tax instead of adding it
