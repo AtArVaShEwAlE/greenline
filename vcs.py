@@ -1,4 +1,5 @@
 import subprocess
+from datetime import datetime
 
 def git_commit(repo_dir, message):
     try:
@@ -79,4 +80,22 @@ def get_repo_root(start_dir):
         )
         return result.stdout.strip()
     except (subprocess.CalledProcessError, FileNotFoundError):
+        return None
+    
+def create_backup_branch(repo_dir):
+    """
+    Creates a branch pointing at the current commit, as a rollback
+    checkpoint before a healing session begins. Does NOT switch to it --
+    stays on whatever branch is currently checked out.
+    Returns the branch name on success, or None if it couldn't be created
+    (e.g. no commits yet, or not a git repo).
+    """
+    branch_name = f"greenline-backup-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
+    try:
+        result = subprocess.run(
+            ["git", "branch", branch_name],
+            cwd=repo_dir, capture_output=True, text=True
+        )
+        return branch_name if result.returncode == 0 else None
+    except FileNotFoundError:
         return None

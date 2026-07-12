@@ -1,0 +1,162 @@
+[
+  {
+    "project_dir": "E:/greenline/sample/multi",
+    "test_target": "E:/greenline/sample/multi/test_store.py",
+    "language": "python",
+    "model": "llama-3.1-8b-instant",
+    "max_retries": 5,
+    "success": true,
+    "attempts": 4,
+    "files_touched": [
+      "inventory.py",
+      "pricing.py",
+      "discounts.py"
+    ],
+    "duration_seconds": 9.6,
+    "backup_branch": "greenline-backup-20260712-210836",
+    "timestamp": "2026-07-12 21:08:46"
+  },
+  {
+    "project_dir": "E:/greenline/sample/multi",
+    "test_target": "sample",
+    "language": "python",
+    "model": "llama-3.1-8b-instant",
+    "max_retries": 5,
+    "success": false,
+    "attempts": 1,
+    "files_touched": [],
+    "duration_seconds": 0.3,
+    "backup_branch": "greenline-backup-20260712-210821",
+    "timestamp": "2026-07-12 21:08:21"
+  },
+  {
+    "project_dir": "E:/greenline/sample/multi",
+    "test_target": "E:/greenline/sample/multi/test_store.py",
+    "language": "python",
+    "model": "llama-3.1-8b-instant",
+    "max_retries": 5,
+    "success": true,
+    "attempts": 1,
+    "files_touched": [],
+    "duration_seconds": 0.7,
+    "timestamp": "2026-07-12 21:05:35"
+  },
+  {
+    "project_dir": "E:/greenline/sample/multi",
+    "test_target": "E:/greenline/sample/multi/test_store.py",
+    "language": "python",
+    "model": "llama-3.1-8b-instant",
+    "max_retries": 3,
+    "success": false,
+    "attempts": 3,
+    "files_touched": [
+      "inventory.py",
+      "pricing.py",
+      "discounts.py"
+    ],
+    "duration_seconds": 11.3,
+    "timestamp": "2026-07-12 14:49:07"
+  },
+  {
+    "project_dir": "E:/greenline/sample/multi",
+    "test_target": "sample",
+    "language": "python",
+    "model": "llama-3.1-8b-instant",
+    "max_retries": 3,
+    "success": false,
+    "attempts": 1,
+    "files_touched": [],
+    "duration_seconds": 0.2,
+    "timestamp": "2026-07-12 14:48:40"
+  },
+  {
+    "project_dir": "E:/greenline/sample/multi",
+    "test_target": "sample",
+    "language": "python",
+    "model": "llama-3.1-8b-instant",
+    "max_retries": 3,
+    "success": false,
+    "attempts": 1,
+    "files_touched": [],
+    "duration_seconds": 0.2,
+    "timestamp": "2026-07-12 14:48:13"
+  },
+  {
+    "project_dir": "E:/greenline/sample",
+    "test_target": "E:/greenline/sample/test_code.py",
+    "language": "python",
+    "model": "llama-3.3-70b-versatile",
+    "max_retries": 5,
+    "success": true,
+    "attempts": 2,
+    "files_touched": [
+      "buggy_code.py"
+    ],
+    "duration_seconds": 3.8,
+    "timestamp": "2026-07-11 21:08:17"
+  },
+  {
+    "project_dir": "E:/greenline/sample",
+    "test_target": "sample",
+    "language": "python",
+    "model": "llama-3.3-70b-versatile",
+    "max_retries": 5,
+    "success": false,
+    "attempts": 1,
+    "files_touched": [],
+    "duration_seconds": 0.2,
+    "timestamp": "2026-07-11 21:06:35"
+  },
+  {
+    "project_dir": "E:/greenline/sample",
+    "test_target": "sample",
+    "language": "python",
+    "model": "llama-3.3-70b-versatile",
+    "max_retries": 5,
+    "success": false,
+    "attempts": 1,
+    "files_touched": [],
+    "duration_seconds": 0.2,
+    "timestamp": "2026-07-11 21:06:32"
+  },
+  {
+    "project_dir": "E:/greenline/sample",
+    "test_target": "sample",
+    "language": "python",
+    "model": "llama-3.3-70b-versatile",
+    "max_retries": 5,
+    "success": false,
+    "attempts": 1,
+    "files_touched": [],
+    "duration_seconds": 0.2,
+    "timestamp": "2026-07-11 21:06:21"
+  },
+  {
+    "project_dir": "E:/greenline/sample",
+    "test_target": "E:/greenline/sample/test_code.py",
+    "language": "python",
+    "model": "llama-3.3-70b-versatile",
+    "max_retries": 5,
+    "success": true,
+    "attempts": 2,
+    "files_touched": [
+      "buggy_code.py"
+    ],
+    "duration_seconds": 4.4,
+    "timestamp": "2026-07-11 13:13:40"
+  },
+  {
+    "project_dir": "E:/greenline/sample/js-test",
+    "test_target": "E:/greenline/sample/js-test/math.test.js",
+    "language": "javascript",
+    "model": "llama-3.3-70b-versatile",
+    "max_retries": 5,
+    "success": true,
+    "attempts": 2,
+    "files_touched": [
+      "math.js"
+    ],
+    "duration_seconds": 15.7,
+    "timestamp": "2026-07-10 18:48:27"
+  }
+]
